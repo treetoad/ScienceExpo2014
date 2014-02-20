@@ -15,8 +15,8 @@ BrickPiSetup()  # setup the serial port for communication
 BrickPi.MotorEnable[PORT_A] = 1 #Enable the Motor A
 
 BrickPiSetupSensors()   #Send the properties of sensors to BrickPi
-
-while True:
+ot = time.time()
+while(time.time() - ot < 0.3):
     print "Running Forward"
     BrickPi.MotorSpeed[PORT_A] = 200  #Set the speed of MotorA (-255 to 255)
     ot = time.time()
@@ -29,3 +29,5 @@ while True:
     while(time.time() - ot < 0.3):    #running while loop for 3 seconds
 	 BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
      	 time.sleep(.5)              # sleep for 500 ms
+
+print "WERE DONE YAY!!!!!"
