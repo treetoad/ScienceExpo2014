@@ -26,7 +26,6 @@ while True:
     while(time.time() - ot < 3):    #running while loop for 3 seconds
         BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
         time.sleep(.1)              # sleep for 100 ms
-    BrickPi.MotorSpeed[PORT_A] = 0
     BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
 
     BrickPi.MotorSpeed[PORT_B] = 200  #Set the speed of MotorA (-255 to 255)
@@ -35,6 +34,7 @@ while True:
         BrickPiUpdateValues()       # Bsk BrickPi to update values for sensors/motors
         time.sleep(.1)              # sleep for 100 ms
     BrickPi.MotorSpeed[PORT_B] = 0
+    BrickPi.MotorSpeed[PORT_A] = 0
     BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
 
     BrickPi.MotorSpeed[PORT_A] = -200  #Set the speed of MotorA (-255 to 255)
