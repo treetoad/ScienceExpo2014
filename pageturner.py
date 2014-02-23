@@ -14,20 +14,20 @@ BrickPiSetup()  # setup the serial port for communication
 
 wheel_controller = PORT_A
 
+print "initializing"
 
-
-def page_preturn
+#this moves the wheel turner and gets the page ready to be flipped
+def page_preturn():
+    print "in page_preturn"
     BrickPi.MotorEnable[wheel_controller] = 1 #Enable the Motor A
     BrickPi.MotorSpeed[wheel_controller] = 100  #Set the speed of MotorA (-255 to 255)
     BrickPiUpdateValues()
+    
 
 ##    
 ##BrickPi.MotorEnable[PORT_A] = 1 #Enable the Motor A
 ##BrickPi.MotorEnable[PORT_B] = 1 #Enable the Motor B
 ##BrickPi.MotorEnable[PORT_C] = 1 #Enable the Motor C
-
-
-
 
 
 
