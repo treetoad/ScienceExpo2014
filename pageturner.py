@@ -10,7 +10,6 @@
 
 from BrickPi import *   #import BrickPi.py file to use BrickPi operations
 
-BrickPiSetup()  # setup the serial port for communication
 
 wheel_motor = PORT_A
 claw_motor = PORT_C
@@ -18,6 +17,7 @@ shooty_motor = PORT_B
 
 def initialize():
     print "* initializing BrickPi motors"
+    BrickPiSetup()  # setup the serial port for communication
     BrickPi.MotorEnable[wheel_motor] = 1 #Enable the Motor A
     BrickPi.MotorEnable[claw_motor] = 1 #Enable the Motor A
     BrickPi.MotorEnable[shooty_motor] = 1
@@ -46,6 +46,7 @@ def move(motor, speed, duration):
     while(time.time() - ot < duration):
         BrickPiUpdateValues()
         time.sleep(0.1)
+        
       
 def move_claw():
     print "*moving claw"
@@ -66,9 +67,10 @@ initialize()
 ##move_claw()
 ##flip_claw()
 
-move(claw_motor, 50, 1.5)
-move(shooty_motor, 100, 2)
-move(shooty_motor, -100, 2)
+move(wheel_motor, 30, 1, 5)
+move(shooty_motor, 100, 2, 5)
+move(claw_motor, 45, 2, 4)
+move(shooty_motor, -100, 1, 0)
 
 
 ##    
