@@ -67,10 +67,10 @@ initialize()
 ##move_claw()
 ##flip_claw()
 
-move(wheel_motor, 30, 1, 5)
-move(shooty_motor, 100, 2, 5)
-move(claw_motor, 45, 2, 4)
-move(shooty_motor, -100, 1, 0)
+move(wheel_motor, 30, 1)
+move(shooty_motor, 100, 2)
+move(claw_motor, 45, 2)
+move(shooty_motor, -100, 1)
 
 
 ##    
