@@ -12,17 +12,64 @@ from BrickPi import *   #import BrickPi.py file to use BrickPi operations
 
 BrickPiSetup()  # setup the serial port for communication
 
-wheel_controller = PORT_A
+wheel_motor = PORT_A
+claw_motor = PORT_C
+shooty_motor = PORT_B
 
-print "initializing"
+def initialize():
+    print "* initializing BrickPi motors"
+    BrickPi.MotorEnable[wheel_motor] = 1 #Enable the Motor A
+    BrickPi.MotorEnable[claw_motor] = 1 #Enable the Motor A
+    BrickPi.MotorEnable[shooty_motor] = 1
 
-#this moves the wheel turner and gets the page ready to be flipped
+
+#this moves the wheel turner and gets the page ready to be flipped def
 def page_preturn():
-    print "in page_preturn"
-    BrickPi.MotorEnable[wheel_controller] = 1 #Enable the Motor A
-    BrickPi.MotorSpeed[wheel_controller] = 100  #Set the speed of MotorA (-255 to 255)
-    BrickPiUpdateValues()
+    print "* in page_preturn"
+    BrickPi.MotorSpeed[wheel_motor] = 100  #Set the speed of MotorA (-255to 255) BrickPiUpdateValues() time.sleep(4)
     
+def flip_claw():
+    print "*in flip_claw"
+    time.sleep(3)
+    c  #Set the speed of MotorA (-255 to 255)
+    BrickPiUpdateValues()
+   
+   
+    BrickPi.MotorSpeed[claw_motor] = -100
+    while(time.time() - ot > 2):
+        BrickPiUpdateValues()
+        
+def move(motor, speed, duration):
+    ot = time.time()
+    BrickPi.MotorSpeed[motor] = speed
+    BrickPiUpdateValues()
+    while(time.time() - ot < duration):
+        BrickPiUpdateValues()
+        time.sleep(0.1)
+      
+def move_claw():
+    print "*moving claw"
+    time.sleep(1)
+    BrickPi.MotorSpeed[shooty_motor] = 100
+    ot = time.time()
+    ot = time.time()
+    BrickPiUpdateValues()
+    BrickPi.MotorSpeed[shooty_motor] = -100
+    time.sleep(1)
+    while(time.time() - ot < 200):
+        BrickPiUpdateValues()
+    
+        
+    
+initialize()
+##page_preturn()
+##move_claw()
+##flip_claw()
+
+move(claw_motor, 50, 1.5)
+move(shooty_motor, 100, 2)
+move(shooty_motor, -100, 2)
+
 
 ##    
 ##BrickPi.MotorEnable[PORT_A] = 1 #Enable the Motor A
