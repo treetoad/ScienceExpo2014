@@ -1,4 +1,4 @@
-# Jaikrishna
+
 # Initial Date: June 24, 2013
 # Last Updated: June 24, 2013
 #
@@ -11,7 +11,7 @@
 from BrickPi import *   #import BrickPi.py file to use BrickPi operations
 
 
-wheel_motor = PORT_A
+wheel_motor = PORT_D
 claw_motor = PORT_C
 shooty_motor = PORT_B
 
@@ -22,22 +22,6 @@ def initialize():
     BrickPi.MotorEnable[claw_motor] = 1 #Enable the Motor A
     BrickPi.MotorEnable[shooty_motor] = 1
 
-
-#this moves the wheel turner and gets the page ready to be flipped def
-def page_preturn():
-    print "* in page_preturn"
-    BrickPi.MotorSpeed[wheel_motor] = 100  #Set the speed of MotorA (-255to 255) BrickPiUpdateValues() time.sleep(4)
-    
-def flip_claw():
-    print "*in flip_claw"
-    time.sleep(3)
-    c  #Set the speed of MotorA (-255 to 255)
-    BrickPiUpdateValues()
-   
-   
-    BrickPi.MotorSpeed[claw_motor] = -100
-    while(time.time() - ot > 2):
-        BrickPiUpdateValues()
         
 def move(motor, speed, duration):
     ot = time.time()
@@ -46,19 +30,15 @@ def move(motor, speed, duration):
     while(time.time() - ot < duration):
         BrickPiUpdateValues()
         time.sleep(0.1)
-        
-      
-def move_claw():
-    print "*moving claw"
-    time.sleep(1)
-    BrickPi.MotorSpeed[shooty_motor] = 100
-    ot = time.time()
-    ot = time.time()
+    BrickPi.MotorSpeed[motor] = 0
     BrickPiUpdateValues()
-    BrickPi.MotorSpeed[shooty_motor] = -100
-    time.sleep(1)
-    while(time.time() - ot < 200):
-        BrickPiUpdateValues()
+        
+
+def stop(motor):
+    BrickPi.MotorSpeed[motor] = 0
+    BrickPiUpdateValues()
+        
+
     
         
     
@@ -67,10 +47,11 @@ initialize()
 ##move_claw()
 ##flip_claw()
 
-move(wheel_motor, 30, 1)
-move(shooty_motor, 100, 2)
-move(claw_motor, 45, 2)
-move(shooty_motor, -100, 1)
+move(wheel_motor, 50, 1)
+move(shooty_motor, 130, 2)
+move(claw_motor, 60, 2)
+move(claw_motor, -60, 2)
+move(shooty_motor, -130, 1)
 
 
 ##    
