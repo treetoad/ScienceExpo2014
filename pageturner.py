@@ -29,7 +29,7 @@ def move(motor, speed, duration):
     BrickPiUpdateValues()
     while(time.time() - ot < duration):
         BrickPiUpdateValues()
-        time.sleep(0.1)
+        time.sleep(0.05)
     BrickPi.MotorSpeed[motor] = 0
     BrickPiUpdateValues()
         
@@ -39,19 +39,64 @@ def stop(motor):
     BrickPiUpdateValues()
         
 
+def preturn_page():
+    print "preparing page to be flipped"
+
+def flip_page():    
+    print "flipping page"   
     
-        
+def page_preturn():
+    move(wheel_motor, 65, 1)
+
+def reset_claw():
+    move(shooty_motor, -130, 1)
+    move(claw_motor, -30, 1.5)
+
+def position_flipper():
+    print "get flipper right in front of page"
+    move(claw_motor, 18, 1.4)
+    
+def thrust_flipper():
+    print "get flipper under page to turn"
+    ot = time.time()
+    BrickPi.MotorSpeed[shooty_motor] = 125
+    BrickPi.MotorSpeed[claw_motor] = 30
+    BrickPiUpdateValues()
+    while(time.time() - ot < 0.5):
+        BrickPiUpdateValues()
+        time.sleep(0.05)
+    BrickPi.MotorSpeed[shooty_motor] = 0
+    BrickPi.MotorSpeed[claw_motor] = 0
+    BrickPiUpdateValues()
+
+def flip_page():
+    print "actually flip the page"
+    
+def move_claw():
+
+    move(shooty_motor, 130, 1)
+    move(claw_motor, 90, 2)
+    move(claw_motor, -45, 2)
+    move(shooty_motor, -130, 1)
     
 initialize()
+reset_claw()
+page_preturn()
+position_flipper()
+thrust_flipper()
+
+##5
+
+##
+##initialize()
 ##page_preturn()
-##move_claw()
+##reset_claw() 
+
 ##flip_claw()
 
-move(wheel_motor, 50, 1)
-move(shooty_motor, 130, 2)
-move(claw_motor, 60, 2)
-move(claw_motor, -60, 2)
-move(shooty_motor, -130, 1)
+
+
+
 
 
 ##    
