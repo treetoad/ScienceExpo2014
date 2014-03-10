@@ -10,7 +10,12 @@ def ocr(next_page_num):
     right_side_text = "page%d" % (next_page_num + 1)
 
     ##Take an image from the RaspberryPi camera with sharpness 100(increases the readability of the text for OCR)
-    call ("raspistill -o " + base_image_name +  " -q 100 -t 1 -sh 100 ", shell=True)
+    # -cfx 128:128  take grayscale picture instead of colour
+    # -q 100  quality setting to max
+    # -t 1   move timeout before picture from default 5 seconds to 1
+    # -sh 100   maximum sharpness
+    # -th none   do not embed thumbail data in image
+    call ("raspistill -o " + base_image_name +  " -cfx 128:128 -q 100 -t 1 -sh 100 -th none", shell=True)
     print "Image taken"
 
     #crop out page on left side
