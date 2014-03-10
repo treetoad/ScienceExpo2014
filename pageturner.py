@@ -25,7 +25,7 @@ def initialize():
     BrickPi.MotorEnable[claw_motor] = 1 #Enable the Motor A
     BrickPi.MotorEnable[shooty_motor] = 1
 
-        
+
 def move(motor, speed, duration):
     ot = time.time()
     BrickPi.MotorSpeed[motor] = speed
@@ -35,13 +35,13 @@ def move(motor, speed, duration):
         time.sleep(0.01)
     BrickPi.MotorSpeed[motor] = 0
     BrickPiUpdateValues()
-        
+
 
 def stop(motor):
     BrickPi.MotorSpeed[motor] = 0
     BrickPiUpdateValues()
-        
-    
+
+
 def halfturn_wheel():
     move(wheel_motor, 80, 1.26) ## 0.63
 
@@ -63,7 +63,7 @@ def reset_claw():
 def position_flipper():
     print "get flipper right in front of page"
     move(claw_motor, 18, 1.4) #1.4 is sort of working
-    
+
 def thrust_flipper():
     print "get flipper under page to turn"
     ot = time.time()
@@ -80,8 +80,8 @@ def thrust_flipper():
 def flip_page():
     print "actually flip the page"
     move(claw_motor, 120, 3)
-    
-    
+
+
 def move_claw():
 
     move(shooty_motor, 130, 1)
@@ -89,45 +89,62 @@ def move_claw():
     move(claw_motor, -45, 2)
     move(shooty_motor, -130, 1)
 
-def ocr():   
-    #Take an image from the RaspberryPi camera with sharpness 100(increases the readability of the text for OCR)
-    call ("raspistill -o j2.jpg -t 1 -sh 200", shell=True)
-    print "Image taken"
-    
-    #Start the Tesseract OCR and save the text to out1.txt
-    call ("tesseract j2.jpg out1.txt", shell=True)
-    print "OCR complete"
-    
-    #Open the text file and split the paragraph to Sentences
-    fname="out1.txt"
-    f=open(fname)
-    content=f.read()
-    print content
+def ocr(next_page_num):
+    base_image_name = "full_image.jpg"
+    left_page_image = "page%d.jpg" % next_page_num
+    right_page_image = "page%d.jpg" % (next_page_num + 1)
+    left_side_text = "page%d" % next_page_num
+    right_side_text = "page%d" % (next_page_num + 1)
 
-##ocr()  
+    ##Take an image from the RaspberryPi camera with sharpness 100(increases the readability of the text for OCR)
+    # -cfx 128:128  take grayscale picture instead of colour
+    # -q 100  quality setting to max
+    # -t 1   move timeout before picture from default 5 seconds to 1
+    # -sh 100   maximum sharpness
+    # -th none   do not embed thumbail data in image
+    call ("raspistill -o " + base_image_name +  " -cfx 128:128 -q 100 -t 1 -sh 100 -th none", shell=True)
+    print "Image taken"
+
+    #crop out page on left side
+    call ("convert " + base_image_name + " -crop 925x1340+220+330 -depth 300 -units pixelsperinch " + left_page_image, shell=True)
+
+    #Start the Tesseract OCR and save the text to pageXXX.txt
+    call ("tesseract " + left_page_image +  " " + left_side_text, shell=True)
+    print "left side OCR complete"
+
+    #crop out page on right side
+    call ("convert " + base_image_name + " -crop 900x1290+1250+350 -depth 300 -units pixelsperinch " + right_page_image, shell=True)
+
+    #Start the Tesseract OCR and save the text to pageXXX.txt
+    call ("tesseract " + right_page_image +  " " + right_side_text, shell=True)
+    print "right side OCR complete"
+
+
 initialize()
 
+def turnpage():
+	reset_claw()
+	halfturn_wheel()
+	position_flipper()
+	thrust_flipper()
+	flip_page()
 
-reset_claw()
-halfturn_wheel()
-position_flipper()
-thrust_flipper()
-flip_page()
+def main():
+  proceed = raw_input("'q' to quit, any other key to process next page :")
+  if proceed == "q":
+     exit()
+  else:
+    turnpage()
+    ocr(1)
+    main()
 
-##5
+main()
+
+
+
+
+
 ##
-##initialize()
-
-
-
-##flip_claw()
-
-
-
-
-
-
-##    
 ##BrickPi.MotorEnable[PORT_A] = 1 #Enable the Motor A
 ##BrickPi.MotorEnable[PORT_B] = 1 #Enable the Motor B
 ##BrickPi.MotorEnable[PORT_C] = 1 #Enable the Motor C
