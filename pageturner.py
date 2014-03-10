@@ -14,9 +14,9 @@ import re
 from BrickPi import *   #import BrickPi.py file to use BrickPi operations
 
 
-wheel_motor = PORT_D
-claw_motor = PORT_C
-shooty_motor = PORT_B
+wheel_motor = PORT_B
+claw_motor = PORT_D
+shooty_motor = PORT_A
 
 def initialize():
     print "* initializing BrickPi motors"
@@ -46,8 +46,8 @@ def halfturn_wheel():
     move(wheel_motor, 80, 1.26) ## 0.63
 
 def reset_claw():
-##    move(shooty_motor, -130, 2)
-##    move(claw_motor, -30, 1.5)
+    move(shooty_motor, -130, 2)
+    move(claw_motor, -30, 1.5)
     ot = time.time()
     BrickPi.MotorSpeed[shooty_motor] = -125
     BrickPi.MotorSpeed[claw_motor] = -30
@@ -91,7 +91,7 @@ def move_claw():
 
 def ocr():   
     #Take an image from the RaspberryPi camera with sharpness 100(increases the readability of the text for OCR)
-    call ("raspistill -o j2.jpg -t 1 -sh 100", shell=True)
+    call ("raspistill -o j2.jpg -t 1 -sh 200", shell=True)
     print "Image taken"
     
     #Start the Tesseract OCR and save the text to out1.txt
@@ -104,21 +104,21 @@ def ocr():
     content=f.read()
     print content
 
-ocr()    
-#initialize()
+##ocr()  
+initialize()
 
 
-##reset_claw()
-##halfturn_wheel()
-##position_flipper()
-##thrust_flipper()
-##flip_page()
+reset_claw()
+halfturn_wheel()
+position_flipper()
+thrust_flipper()
+flip_page()
 
 ##5
 ##
 ##initialize()
-##page_preturn()
-##reset_claw() 
+
+
 
 ##flip_claw()
 
